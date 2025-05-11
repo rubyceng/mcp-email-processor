@@ -1,5 +1,5 @@
-import dotenv from "dotenv";
-import { OpenAI } from "openai";
+import dotenv from 'dotenv';
+import { OpenAI } from 'openai';
 
 // 加载环境变量
 dotenv.config();
@@ -33,18 +33,18 @@ export class NLPService {
         summaryTargetLength
       );
       const response = await openai.chat.completions.create({
-        model: process.env.MODULE_CONTEXT || "grok-3-beta",
-        messages: [{ role: "user", content: prompt }],
+        model: process.env.MODULE_CONTEXT || 'grok-3-beta',
+        messages: [{ role: 'user', content: prompt }],
         // max_tokens: summaryTargetLength * 2, // 粗略估计词数对应的 token 数
         temperature: 0.5,
       });
 
-      const summary = response.choices[0].message.content?.trim() || "";
+      const summary = response.choices[0].message.content?.trim() || '';
       return summary;
     } catch (error) {
-      this.handleError(error, "生成总结");
+      this.handleError(error, '生成总结');
       throw new Error(
-        `生成总结失败: ${error instanceof Error ? error.message : "未知错误"}`
+        `生成总结失败: ${error instanceof Error ? error.message : '未知错误'}`
       );
     }
   }
@@ -71,18 +71,18 @@ export class NLPService {
         outlineStyle
       );
       const response = await openai.chat.completions.create({
-        model: process.env.MODULE_CONTEXT || "grok-3-beta",
-        messages: [{ role: "user", content: prompt }],
+        model: process.env.MODULE_CONTEXT || 'grok-3-beta',
+        messages: [{ role: 'user', content: prompt }],
         max_tokens: outlineTargetPoints * 50, // 粗略估计每个大纲点对应的 token 数
         temperature: 0.5,
       });
 
-      const outline = response.choices[0].message.content?.trim() || "";
+      const outline = response.choices[0].message.content?.trim() || '';
       return outline;
     } catch (error) {
-      this.handleError(error, "生成大纲");
+      this.handleError(error, '生成大纲');
       throw new Error(
-        `生成大纲失败: ${error instanceof Error ? error.message : "未知错误"}`
+        `生成大纲失败: ${error instanceof Error ? error.message : '未知错误'}`
       );
     }
   }

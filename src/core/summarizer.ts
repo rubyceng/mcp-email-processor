@@ -1,5 +1,5 @@
-import { nlpService } from "../services/nlp-service";
-import { logger } from "../utils/logger";
+import { nlpService } from '../services/nlp-service';
+import { logger } from '../utils/logger';
 
 /**
  * 总结配置接口
@@ -32,47 +32,46 @@ export class Summarizer {
    */
   async summarizeAndOutline(
     text: string,
-    config: SummarizationConfig,
+    config: SummarizationConfig
   ): Promise<SummarizationResult> {
     try {
-      logger.info("开始生成文本总结和大纲");
-        if (!text||text.length == 0 )
-        {
-          throw new Error("文本内容为空");
-        }
+      logger.info('开始生成文本总结和大纲');
+      if (!text || text.length == 0) {
+        throw new Error('文本内容为空');
+      }
       // 调用 NLP 服务生成总结
       const summary = await nlpService.generateSummary(
         text,
         config.language,
-        config.summaryTargetLength,
+        config.summaryTargetLength
       );
 
       // 调用 NLP 服务生成大纲
       if (!config.generateOutline) {
         return {
           summary,
-          outline: "",
+          outline: '',
         };
       }
       const outline = await nlpService.generateOutline(
         text,
         config.language,
         config.outlineTargetPoints,
-        config.outlineStyle,
+        config.outlineStyle
       );
 
       // 返回结构化结果
-      logger.info("文本总结和大纲生成成功");
+      logger.info('文本总结和大纲生成成功');
       return {
         summary,
         outline,
       };
     } catch (error) {
-      logger.error("总结和大纲生成过程中发生错误", { error });
+      logger.error('总结和大纲生成过程中发生错误', { error });
       throw new Error(
         `总结和大纲生成失败: ${
-          error instanceof Error ? error.message : "未知错误"
-        }`,
+          error instanceof Error ? error.message : '未知错误'
+        }`
       );
     }
   }

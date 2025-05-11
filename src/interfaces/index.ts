@@ -7,13 +7,13 @@ export interface SummarizationConfig {
    * 总结和大纲的语言
    * 'en' - 英文, 'zh' - 中文, 'auto' - 自动检测
    */
-  language: "en" | "zh" | "auto";
+  language: 'en' | 'zh' | 'auto';
 
   /**
    * 总结的目标长度
    * 'short' - 简短, 'medium' - 中等, 'long' - 详细
    */
-  summaryTargetLength?: "short" | "medium" | "long";
+  summaryTargetLength?: 'short' | 'medium' | 'long';
 
   /**
    * 是否生成大纲
@@ -29,7 +29,7 @@ export interface SummarizationConfig {
    * 大纲的样式
    * 'bullet' - 项目符号, 'numbered' - 编号, 'paragraph' - 段落
    */
-  outlineStyle?: "bullet" | "numbered" | "paragraph";
+  outlineStyle?: 'bullet' | 'numbered' | 'paragraph';
 
   /**
    * 是否识别邮件中的图像内容
@@ -41,13 +41,13 @@ export interface SummarizationConfig {
    * 'ocr' - 光学字符识别, 'captioning' - 图像描述生成
    * 仅当 recognizeImages 为 true 时有效
    */
-  imageRecognitionStrategy?: "ocr" | "captioning";
+  imageRecognitionStrategy?: 'ocr' | 'captioning';
 
   /**
    * 语气偏好
    * 'formal' - 正式, 'casual' - 随意, 'professional' - 专业
    */
-  tonePreference?: "formal" | "casual" | "professional";
+  tonePreference?: 'formal' | 'casual' | 'professional';
 }
 
 /**

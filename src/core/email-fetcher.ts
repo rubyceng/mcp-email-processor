@@ -1,5 +1,5 @@
-import { ImapFlow } from "imapflow";
-import { logger } from "../utils/logger";
+import { ImapFlow } from 'imapflow';
+import { logger } from '../utils/logger';
 
 export interface EmailFetcherOptions {
   host: string;
@@ -37,9 +37,9 @@ export class EmailFetcher {
   async connect(): Promise<void> {
     try {
       await this.client.connect();
-      logger.info("IMAP connection established");
+      logger.info('IMAP connection established');
     } catch (error: unknown) {
-      logger.error("Failed to connect to IMAP server:", error);
+      logger.error('Failed to connect to IMAP server:', error);
       throw new Error(`IMAP connection failed: ${(error as Error).message}`);
     }
   }
@@ -49,7 +49,7 @@ export class EmailFetcher {
       const mailboxes = await this.client.list();
       return mailboxes.map((mb) => mb.path);
     } catch (error: unknown) {
-      logger.error("Failed to list mailboxes:", error);
+      logger.error('Failed to list mailboxes:', error);
       throw new Error(`Failed to list mailboxes: ${(error as Error).message}`);
     }
   }
@@ -80,7 +80,7 @@ export class EmailFetcher {
       }
       return messages;
     } catch (error: unknown) {
-      logger.error("Failed to search emails:", error);
+      logger.error('Failed to search emails:', error);
       throw new Error(`Failed to search emails: ${(error as Error).message}`);
     }
   }
@@ -104,9 +104,9 @@ export class EmailFetcher {
   async close(): Promise<void> {
     try {
       await this.client.logout();
-      logger.info("IMAP connection closed");
+      logger.info('IMAP connection closed');
     } catch (error: unknown) {
-      logger.error("Failed to close IMAP connection:", error);
+      logger.error('Failed to close IMAP connection:', error);
       throw new Error(
         `Failed to close IMAP connection: ${(error as Error).message}`
       );

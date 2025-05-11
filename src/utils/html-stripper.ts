@@ -1,4 +1,4 @@
-import { convert } from "html-to-text";
+import { convert } from 'html-to-text';
 
 /**
  * 将HTML内容转换为纯文本
@@ -7,7 +7,7 @@ import { convert } from "html-to-text";
  */
 export function stripHtml(html: string): string {
   if (!html) {
-    return "";
+    return '';
   }
 
   const options = {
@@ -30,7 +30,7 @@ export function stripHtml(html: string): string {
   try {
     return convert(html, options);
   } catch (error) {
-    console.error("HTML转换错误:", error);
-    return "";
+    console.error('HTML转换错误:', error);
+    return '';
   }
 }

@@ -5,6 +5,7 @@
 一个用于处理邮件、总结内容和生成大纲的MCP插件。
 
 ## 开发待办
+
 1. 对接Gmail的IMAP服务
 2. 开放自定义Prompt设置
 3. 开发不同模型的适配插件
@@ -53,12 +54,12 @@ MODULE_CONTEXT=YOUR_MODULE
 
 ```typescript
 export const summarizationConfig = {
-  language: "zh",
+  language: 'zh',
   summaryTargetLength: 100,
   outlineTargetPoints: 5,
-  outlineStyle: "bullet",
+  outlineStyle: 'bullet',
   recognizeImages: false,
-  imageRecognitionStrategy: "ocr" as const,
+  imageRecognitionStrategy: 'ocr' as const,
 };
 ```
 
@@ -103,6 +104,7 @@ pnpm start process <input>
 - `<input>`：要处理的邮件内容或文件路径。
 
 **选项：**
+
 - `-l, --language <language>`：总结语言（默认："zh"）。
 - `-s, --summary-length <length>`：总结目标长度（默认："medium"）。
 - `-g, --outline`：是否生成大纲（默认：false）。

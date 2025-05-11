@@ -1,5 +1,5 @@
-import { createWorker } from "tesseract.js";
-import { logger } from "../utils/logger";
+import { createWorker } from 'tesseract.js';
+import { logger } from '../utils/logger';
 
 /**
  * OCR服务类，用于处理图片内容的识别
@@ -12,11 +12,11 @@ class OCRService {
    */
   async init(): Promise<void> {
     try {
-      this.worker = await createWorker("eng");
-      logger.info("OCR服务初始化成功");
+      this.worker = await createWorker('eng');
+      logger.info('OCR服务初始化成功');
     } catch (error) {
-      logger.error("OCR服务初始化失败:", error);
-      throw new Error("无法初始化OCR服务");
+      logger.error('OCR服务初始化失败:', error);
+      throw new Error('无法初始化OCR服务');
     }
   }
 
@@ -27,18 +27,18 @@ class OCRService {
    */
   async recognize(imageData: Buffer | string): Promise<string> {
     if (!this.worker) {
-      throw new Error("OCR服务未初始化");
+      throw new Error('OCR服务未初始化');
     }
 
     try {
       const {
         data: { text },
       } = await this.worker.recognize(imageData);
-      logger.info("图片内容识别成功");
+      logger.info('图片内容识别成功');
       return text;
     } catch (error) {
-      logger.error("图片内容识别失败:", error);
-      throw new Error("图片内容识别过程中发生错误");
+      logger.error('图片内容识别失败:', error);
+      throw new Error('图片内容识别过程中发生错误');
     }
   }
 
@@ -49,7 +49,7 @@ class OCRService {
     if (this.worker) {
       await this.worker.terminate();
       this.worker = null;
-      logger.info("OCR服务已终止");
+      logger.info('OCR服务已终止');
     }
   }
 }

@@ -1,5 +1,5 @@
-import { ParsedMail, simpleParser } from "mailparser";
-import { logger } from "../utils/logger";
+import { ParsedMail, simpleParser } from 'mailparser';
+import { logger } from '../utils/logger';
 
 /**
  * 解析原始邮件内容并返回结构化的邮件对象
@@ -8,12 +8,12 @@ import { logger } from "../utils/logger";
  * @throws 解析过程中的错误
  */
 export async function parseEmail(
-  rawEmail: string | Buffer,
+  rawEmail: string | Buffer
 ): Promise<Partial<ParsedMail>> {
   try {
-    logger.info("开始解析邮件内容");
+    logger.info('开始解析邮件内容');
     const parsed = await simpleParser(rawEmail);
-    logger.info("邮件内容解析成功");
+    logger.info('邮件内容解析成功');
 
     // 提取所需字段，构建简洁的邮件对象
     const emailData: Partial<ParsedMail> = {
@@ -29,9 +29,9 @@ export async function parseEmail(
 
     return emailData;
   } catch (error) {
-    logger.error("邮件解析失败", { error });
+    logger.error('邮件解析失败', { error });
     throw new Error(
-      `邮件解析失败: ${error instanceof Error ? error.message : String(error)}`,
+      `邮件解析失败: ${error instanceof Error ? error.message : String(error)}`
     );
   }
 }
@@ -48,11 +48,11 @@ export function getBestTextContent(email: Partial<ParsedMail>): string {
   } else if (email.html) {
     // 简单的HTML到文本转换，实际项目中可能需要更复杂的处理
     return email.html
-      .replace(/<[^>]*>/g, "")
-      .replace(/\s+/g, " ")
+      .replace(/<[^>]*>/g, '')
+      .replace(/\s+/g, ' ')
       .trim();
   }
-  return "";
+  return '';
 }
 
 /**

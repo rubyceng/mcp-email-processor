@@ -1,3 +1,4 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
-
+# 执行代码格式化和eslint检查
+pnpm lint-staged
