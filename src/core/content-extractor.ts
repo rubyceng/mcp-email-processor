@@ -60,7 +60,8 @@ export async function extractContent(
 
     // 提取附件中的图片
     if (parsedMail.attachments && parsedMail.attachments.length > 0) {
-      const imageAttachments = parsedMail.attachments.filter(
+      logger.info("提取附件中的图片");
+      const imageAttachments = parsedMail?.attachments?.filter(
         (att) =>
           att.contentType &&
           att.contentType.startsWith("image/") &&
@@ -75,6 +76,7 @@ export async function extractContent(
         if (config.imageRecognitionStrategy === "ocr" && img.content) {
           try {
             logger.info(`开始OCR识别图片: ${img.filename || "无文件名"}`);
+            await ocrService.init();
             imageText = await ocrService.recognize(img.content);
             logger.info(`OCR识别成功: ${img.filename || "无文件名"}`);
           } catch (error) {

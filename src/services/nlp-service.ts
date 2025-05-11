@@ -7,6 +7,7 @@ dotenv.config();
 // OpenAI 客户端初始化
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
+  baseURL: process.env.BASE_URL,
 });
 
 /**
@@ -23,7 +24,7 @@ export class NLPService {
   async generateSummary(
     text: string,
     language: string,
-    summaryTargetLength: number
+    summaryTargetLength: string
   ): Promise<string> {
     try {
       const prompt = this.buildSummaryPrompt(
@@ -32,9 +33,9 @@ export class NLPService {
         summaryTargetLength
       );
       const response = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
+        model: process.env.MODULE_CONTEXT || "grok-3-beta",
         messages: [{ role: "user", content: prompt }],
-        max_tokens: summaryTargetLength * 2, // 粗略估计词数对应的 token 数
+        // max_tokens: summaryTargetLength * 2, // 粗略估计词数对应的 token 数
         temperature: 0.5,
       });
 
@@ -70,7 +71,7 @@ export class NLPService {
         outlineStyle
       );
       const response = await openai.chat.completions.create({
-        model: "gpt-3.5-turbo",
+        model: process.env.MODULE_CONTEXT || "grok-3-beta",
         messages: [{ role: "user", content: prompt }],
         max_tokens: outlineTargetPoints * 50, // 粗略估计每个大纲点对应的 token 数
         temperature: 0.5,
@@ -96,10 +97,10 @@ export class NLPService {
   private buildSummaryPrompt(
     text: string,
     language: string,
-    summaryTargetLength: number
+    summaryTargetLength: string
   ): string {
     return `
-      请将以下文本总结为大约 ${summaryTargetLength} 词的摘要，使用 ${language} 语言：
+      请将以下文本总结为 ${summaryTargetLength} 摘要，使用 ${language} 语言：
       "${text}"
     `;
   }

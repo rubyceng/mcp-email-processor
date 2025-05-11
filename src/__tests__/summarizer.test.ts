@@ -5,9 +5,10 @@ describe("Summarizer", () => {
     const content = "This is a long content that needs to be summarized.";
     const config = {
       language: "en",
-      summaryTargetLength: 100,
+      summaryTargetLength: 'short',
       outlineTargetPoints: 5,
       outlineStyle: "bullet",
+      generateOutline: true
     };
     const result = await summarizer.summarizeAndOutline(content, config);
     expect(result.summary).toBeDefined();
@@ -18,9 +19,10 @@ describe("Summarizer", () => {
     const content = "";
     const config = {
       language: "en",
-      summaryTargetLength: 100,
+      summaryTargetLength: 'short',
       outlineTargetPoints: 5,
       outlineStyle: "bullet",
+      generateOutline: true
     };
     await expect(
       summarizer.summarizeAndOutline(content, config)

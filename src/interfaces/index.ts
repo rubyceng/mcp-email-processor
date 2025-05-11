@@ -16,10 +16,9 @@ export interface SummarizationConfig {
   summaryTargetLength?: "short" | "medium" | "long";
 
   /**
-   * 总结的目标字数
-   * 如果设置了此项，将覆盖 summaryTargetLength
+   * 是否生成大纲
    */
-  summaryWordCount?: number;
+  generateOutline?: boolean;
 
   /**
    * 大纲的目标要点数量

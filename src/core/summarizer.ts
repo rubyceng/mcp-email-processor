@@ -6,9 +6,10 @@ import { logger } from "../utils/logger";
  */
 export interface SummarizationConfig {
   language: string;
-  summaryTargetLength: number;
+  summaryTargetLength: string;
   outlineTargetPoints: number;
   outlineStyle: string;
+  generateOutline: boolean;
 }
 
 /**
@@ -35,6 +36,10 @@ export class Summarizer {
   ): Promise<SummarizationResult> {
     try {
       logger.info("开始生成文本总结和大纲");
+        if (!text||text.length == 0 )
+        {
+          throw new Error("文本内容为空");
+        }
       // 调用 NLP 服务生成总结
       const summary = await nlpService.generateSummary(
         text,
@@ -43,6 +48,12 @@ export class Summarizer {
       );
 
       // 调用 NLP 服务生成大纲
+      if (!config.generateOutline) {
+        return {
+          summary,
+          outline: "",
+        };
+      }
       const outline = await nlpService.generateOutline(
         text,
         config.language,

@@ -16,7 +16,7 @@ dotenv.config();
 const program = new Command();
 program
   .name("mcp-email-processor")
-  .description("邮件处理插件，用于读取邮件、总结内容并生成大纲")
+  .description("邮件处理mcp插件，用于读取邮件、总结内容并生成大纲")
   .version("1.0.0");
 
 // 处理手动输入的邮件
@@ -26,22 +26,22 @@ program
   .argument("<input>", "邮件内容或文件路径")
   .option("-l, --language <language>", "总结语言", "zh")
   .option("-s, --summary-length <length>", "总结目标长度", "medium")
-  .option("-o, --outline-points <points>", "大纲目标点数", "5")
+  .option("-g --outline", "是否生成大纲", false)
+  .option("-o, --outline-points <points>", "大纲目标点数", "3")
   .option("-t, --outline-style <style>", "大纲样式", "bullet")
   .option("-i, --recognize-images", "是否识别图片内容", false)
   .option("-r, --recognition-strategy <strategy>", "图片识别策略", "ocr")
+  .allowExcessArguments(true)
   .action(async (input, options) => {
     try {
       await processManualEmail(input, {
         language: options.language,
         summaryTargetLength: options.summaryLength,
+        generateOutline: options.outline,
         outlineTargetPoints: parseInt(options.outlinePoints),
         outlineStyle: options.outlineStyle,
         recognizeImages: options.recognizeImages,
-        imageRecognitionStrategy:
-          options.recognitionStrategy === "captioning"
-            ? "description"
-            : options.recognitionStrategy,
+        imageRecognitionStrategy:options.recognitionStrategy  ,
         tonePreference: "formal",
       });
     } catch (error) {
@@ -52,60 +52,60 @@ program
   });
 
 // 通过IMAP获取并处理邮件
-program
-  .command("imap")
-  .description("通过IMAP获取并处理邮件")
-  .option("-h, --host <host>", "IMAP主机", process.env.IMAP_HOST || "")
-  .option("-p, --port <port>", "IMAP端口", process.env.IMAP_PORT || "993")
-  .option("-u, --user <user>", "IMAP用户名", process.env.IMAP_USER || "")
-  .option("-w, --pass <pass>", "IMAP密码", process.env.IMAP_PASS || "")
-  .option(
-    "-s, --secure",
-    "是否使用安全连接",
-    process.env.IMAP_SECURE === "true"
-  )
-  .option("-l, --limit <limit>", "获取邮件数量限制", "5")
-  .option("-lang, --language <language>", "总结语言", "zh")
-  .option("-slen, --summary-length <length>", "总结目标长度", "medium")
-  .option("-op, --outline-points <points>", "大纲目标点数", "5")
-  .option("-os, --outline-style <style>", "大纲样式", "bullet")
-  .option("-i, --recognize-images", "是否识别图片内容", false)
-  .option("-r, --recognition-strategy <strategy>", "图片识别策略", "ocr")
-  .action(async (options) => {
-    try {
-      if (!options.host || !options.port || !options.user || !options.pass) {
-        throw new Error("IMAP配置未完整提供");
-      }
-      await processImapEmails(
-        {
-          host: options.host,
-          port: parseInt(options.port),
-          secure: options.secure,
-          auth: {
-            user: options.user,
-            pass: options.pass,
-          },
-          limit: parseInt(options.limit),
-        },
-        {
-          language: options.language,
-          summaryTargetLength: options.summaryLength,
-          outlineTargetPoints: parseInt(options.outlinePoints),
-          outlineStyle: options.outlineStyle,
-          recognizeImages: options.recognizeImages,
-          imageRecognitionStrategy:
-            options.recognitionStrategy === "captioning"
-              ? "description"
-              : options.recognitionStrategy,
-          tonePreference: "formal",
-        }
-      );
-    } catch (error) {
-      logger.error("处理IMAP邮件时出错:", error);
-      console.error("错误:", (error as Error).message);
-      process.exit(1);
-    }
-  });
+// program
+//   .command("imap")
+//   .description("通过IMAP获取并处理邮件")
+//   .option("-h, --host <host>", "IMAP主机", process.env.IMAP_HOST || "")
+//   .option("-p, --port <port>", "IMAP端口", process.env.IMAP_PORT || "993")
+//   .option("-u, --user <user>", "IMAP用户名", process.env.IMAP_USER || "")
+//   .option("-w, --pass <pass>", "IMAP密码", process.env.IMAP_PASS || "")
+//   .option(
+//     "-s, --secure",
+//     "是否使用安全连接",
+//     process.env.IMAP_SECURE === "true"
+//   )
+//   .option("-l, --limit <limit>", "获取邮件数量限制", "5")
+//   .option("-g, --language <language>", "总结语言", "zh")
+//   .option("-m, --summary-length <length>", "总结目标长度", "medium")
+//   .option("-o, --outline-points <points>", "大纲目标点数", "5")
+//   .option("-s, --outline-style <style>", "大纲样式", "bullet")
+//   .option("-i, --recognize-images", "是否识别图片内容", false)
+//   .option("-r, --recognition-strategy <strategy>", "图片识别策略", "ocr")
+//   .action(async (options) => {
+//     try {
+//       if (!options.host || !options.port || !options.user || !options.pass) {
+//         throw new Error("IMAP配置未完整提供");
+//       }
+//       await processImapEmails(
+//         {
+//           host: options.host,
+//           port: parseInt(options.port),
+//           secure: options.secure,
+//           auth: {
+//             user: options.user,
+//             pass: options.pass,
+//           },
+//           limit: parseInt(options.limit),
+//         },
+//         {
+//           language: options.language,
+//           summaryTargetLength: options.summaryLength,
+//           outlineTargetPoints: parseInt(options.outlinePoints),
+//           outlineStyle: options.outlineStyle,
+//           recognizeImages: options.recognizeImages,
+//           imageRecognitionStrategy:
+//             options.recognitionStrategy === "captioning"
+//               ? "description"
+//               : options.recognitionStrategy,
+//           tonePreference: "formal",
+//         }
+//       );
+//     } catch (error) {
+//       logger.error("处理IMAP邮件时出错:", error);
+//       console.error("错误:", (error as Error).message);
+//       process.exit(1);
+//     }
+//   });
 
 async function processManualEmail(input: string, config: SummarizationConfig) {
   try {
@@ -148,9 +148,10 @@ async function processManualEmail(input: string, config: SummarizationConfig) {
     // 总结内容并生成大纲
     const result = await summarizer.summarizeAndOutline(content.mainText, {
       language: config.language,
-      summaryTargetLength: Number(config.summaryTargetLength),
+      summaryTargetLength: config.summaryTargetLength ?? 'short',
       outlineTargetPoints: Number(config.outlineTargetPoints),
-      outlineStyle: config.outlineStyle ?? "",
+      outlineStyle: config.outlineStyle ?? "20",
+      generateOutline: config.generateOutline ?? false,
     });
     logger.info("内容总结完成");
 
@@ -158,17 +159,19 @@ async function processManualEmail(input: string, config: SummarizationConfig) {
     const fromText = parsedEmail.from
       ? typeof parsedEmail.from === "string"
         ? parsedEmail.from
-        : parsedEmail.from.text || "未知"
+        : parsedEmail.from?.text || "未知"
       : "未知";
     const subjectText = parsedEmail.subject || "无主题";
-    const dateText = parsedEmail.date ? parsedEmail.date.toISOString() : "未知";
+    const dateText = parsedEmail.date ? parsedEmail.date?.toISOString() : "未知";
 
     console.log("邮件基本信息:");
     console.log(`  发件人: ${fromText}`);
     console.log(`  主题: ${subjectText}`);
     console.log(`  日期: ${dateText}`);
     console.log("邮件总结:", result.summary);
-    console.log("大纲:", result.outline);
+    if(result.outline.length >0){
+      console.log("大纲:",result.outline);
+    }
     return result;
   } catch (error: unknown) {
     logger.error("处理邮件时出错:", error);

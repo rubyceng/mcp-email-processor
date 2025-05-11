@@ -1,7 +1,12 @@
 {
   "name": "mcp-email-processor",
   "version": "1.0.0",
+  "author": {
+    "name": "Ruby Ceng",
+    "email": "rubyceng0326@gmail.com"
+  },
   "description": "An MCP plugin for processing emails, summarizing content, and generating outlines.",
+  "license": "Apache-2.0",
   "main": "dist/main.js",
   "scripts": {
     "build": "tsc",
@@ -27,6 +32,8 @@
     "winston": "^3.17.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
     "@types/commander": "^2.12.5",
     "@types/dotenv": "^8.2.3",
     "@types/html-to-text": "^9.0.4",

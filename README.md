@@ -1,123 +1,13 @@
-# MCP Email Processor
-
-## 英文说明
-
-An MCP plugin for processing emails, summarizing content, and generating outlines.
-
-### Installation
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/your-repo/mcp-email-processor.git
-   cd mcp-email-processor
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   pnpm install
-   ```
-
-3. Build the project:
-   ```bash
-   pnpm run build
-   ```
-
-### Configuration
-
-#### Environment Variables
-
-Create a `.env` file in the project root directory with the following variables:
-
-```
-LOG_LEVEL=info
-IMAP_HOST=imap.example.com
-IMAP_PORT=993
-IMAP_SECURE=true
-IMAP_USER=your-email@example.com
-IMAP_PASS=your-password
-```
-
-#### Summarization Configuration
-
-Edit `src/config.ts` to customize summarization options:
-
-```typescript
-export const summarizationConfig = {
-  language: "en",
-  summaryTargetLength: 100,
-  outlineTargetPoints: 5,
-  outlineStyle: "bullet",
-  recognizeImages: false,
-  imageRecognitionStrategy: "ocr" as const,
-};
-```
-
-### Usage
-
-#### CLI Commands
-
-Run the application:
-
-```bash
-pnpm start
-```
-
-Run in development mode:
-
-```bash
-pnpm run dev
-```
-
-Run tests:
-
-```bash
-pnpm test
-```
-
-Lint and format code:
-
-```bash
-pnpm run lint
-pnpm run format
-```
-
-### API Endpoints
-
-Currently, the project operates as a CLI application. API endpoints will be added in future updates.
-
-### Development
-
-#### Code Style
-
-This project uses ESLint for linting and Prettier for formatting. Pre-commit hooks are set up with Husky and Lint-Staged to ensure code quality.
-
-#### Testing
-
-Unit and integration tests are written with Jest. To add tests, place them in the `src/__tests__` directory.
-
-### Security Considerations
-
-- API keys and credentials are managed through environment variables and should never be hard-coded in the codebase.
-- IMAP credentials are securely handled and should not be committed to version control.
-- Data privacy: Be aware that email data may be sent to third-party NLP services for processing.
-
-### Contributing
-
-Contributions are welcome! Please follow the code style guidelines and submit pull requests for review.
-
-### License
-
-[Specify your license here]
-
----
-
 # MCP邮件处理器
 
-## 中文说明
+## 中文文档
 
 一个用于处理邮件、总结内容和生成大纲的MCP插件。
+
+## 开发待办
+1. 对接Gmail的IMAP服务
+2. 开放自定义Prompt设置
+3. 开发不同模型的适配插件
 
 ### 安装
 
@@ -146,12 +36,15 @@ Contributions are welcome! Please follow the code style guidelines and submit pu
 在项目根目录下创建一个`.env`文件，包含以下变量：
 
 ```
-LOG_LEVEL=info
-IMAP_HOST=imap.example.com
-IMAP_PORT=993
-IMAP_SECURE=true
-IMAP_USER=your-email@example.com
-IMAP_PASS=your-password
+OPENAI_API_KEY=YOUR_MODULE_APIKEY
+BASE_URL=YOUR_MODULE_URL
+MODULE_CONTEXT=YOUR_MODULE
+# LOG_LEVEL=info
+# IMAP_HOST=imap.example.com
+# IMAP_PORT=993
+# IMAP_SECURE=true
+# IMAP_USER=your-email@example.com
+# IMAP_PASS=your-password
 ```
 
 #### 总结配置
@@ -176,6 +69,7 @@ export const summarizationConfig = {
 运行应用程序：
 
 ```bash
+pnpm build
 pnpm start
 ```
 
@@ -198,6 +92,25 @@ pnpm run lint
 pnpm run format
 ```
 
+##### 处理命令
+
+处理手动输入的邮件内容或文件：
+
+```bash
+pnpm start process <input>
+```
+
+- `<input>`：要处理的邮件内容或文件路径。
+
+**选项：**
+- `-l, --language <language>`：总结语言（默认："zh"）。
+- `-s, --summary-length <length>`：总结目标长度（默认："medium"）。
+- `-g, --outline`：是否生成大纲（默认：false）。
+- `-o, --outline-points <points>`：大纲目标点数（默认："3"）。
+- `-t, --outline-style <style>`：大纲样式（默认："bullet"）。
+- `-i, --recognize-images`：是否识别图片内容（默认：false）。
+- `-r, --recognition-strategy <strategy>`：图片识别策略（默认："ocr"）。
+
 ### API端点
 
 目前，该项目作为命令行应用程序运行。API端点将在未来的更新中添加。
@@ -212,9 +125,8 @@ pnpm run format
 
 单元测试和集成测试使用Jest编写。要添加测试，请将它们放在`src/__tests__`目录中。
 
-### 安全考虑
+### 安全
 
-- API密钥和凭据通过环境变量管理，绝不应该在代码库中硬编码。
 - IMAP凭据应安全处理，不应提交到版本控制中。
 - 数据隐私：请注意，邮件数据可能会被发送到第三方NLP服务进行处理。
 
@@ -224,4 +136,18 @@ pnpm run format
 
 ### 许可证
 
-[在此指定您的许可证]
+Apache License, Version 2.0
+
+Copyright 2025 RubyCeng
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
